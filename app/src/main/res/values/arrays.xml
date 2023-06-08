@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="flavours">
+        <item>Fruity</item>
+        <item>Citrus</item>
+        <item>Herbal</item>
+        <item>Nutty</item>
+        <item>Zesty</item>
+        <item>Menthol</item>
+    </string-array>
+
+    <integer-array name="radiouses1">
+        <item>100</item>
+        <item>160</item>
+        <item>90</item>
+        <item>90</item>
+        <item>120</item>
+        <item>130</item>
+    </integer-array>
+
+    <string-array name="interests">
+        <item>Tips</item>
+        <item>IQOS Club</item>
+        <item>News</item>
+        <item>Community</item>
+        <item>Competitions</item>
+    </string-array>
+
+    <integer-array name="radiouses2">
+        <item>100</item>
+        <item>130</item>
+        <item>100</item>
+        <item>150</item>
+        <item>120</item>
+    </integer-array>
+
+    <string-array name="notifications">
+        <item>Device Battery</item>
+        <item>Usage Stats</item>
+        <item>Flavours</item>
+        <item>Order Updates</item>
+        <item>Competitions</item>
+    </string-array>
+
+    <integer-array name="radiouses3">
+        <item>150</item>
+        <item>120</item>
+        <item>110</item>
+        <item>125</item>
+        <item>100</item>
+    </integer-array>
+
+    <integer-array name="images">
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+        <item>@drawable/bubble_selected</item>
+    </integer-array>
+
+    <integer-array name="colors">
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+        <item>@color/slate</item>
+    </integer-array>
+
+</resources>

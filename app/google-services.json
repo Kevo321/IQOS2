@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "927068180696",
+    "project_id": "pmi-experience-app",
+    "storage_bucket": "pmi-experience-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927068180696:android:511002d1208a10996147ad",
+        "android_client_info": {
+          "package_name": "com.digitas.iqos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927068180696-jod3jennm0g00j4m5rq631h9k8ksfelq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGwr_SqZ824_r4rBtIrvQPJxEb1AsEDEU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927068180696-jod3jennm0g00j4m5rq631h9k8ksfelq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

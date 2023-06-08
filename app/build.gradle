@@ -1,0 +1,150 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.firebase.appdistribution'
+    id 'com.google.gms.google-services'
+}
+android {
+    namespace 'com.digitas.iqos'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.digitas.iqos"
+        minSdk 27
+        targetSdk 33
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+    signingConfigs {
+        release {
+            storeFile file(KEYSTORE_FILENAME)
+            storePassword(KEYSTORE_PASSWORD)
+            keyAlias(KEY_ALIAS)
+            keyPassword(KEY_PASSWORD)
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            firebaseAppDistribution {
+                artifactType = "APK"
+                groups="Digitas"
+                releaseNotesFile="changelog.txt"
+            }
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+    }
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+import org.apache.commons.configuration2.PropertiesConfiguration
+import org.apache.commons.configuration2.io.FileHandler
+
+def getBitbucketBuildNumber() {
+    return System.getenv('BITBUCKET_BUILD_NUMBER')
+}
+
+task increaseBuildNumber {
+    doLast {
+        def code = getBitbucketBuildNumber()
+
+        def versionPropsFile = file('../gradle.properties')
+        def config = new PropertiesConfiguration()
+        def fileHandler = new FileHandler(config)
+        fileHandler.file = versionPropsFile
+        fileHandler.load()
+        config.setProperty('VERSION_CODE', code)
+        fileHandler.save()
+
+        println 'Increase Build Number:' + code
+    }
+}
+
+dependencies {
+    implementation project(':bubblepicker')
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
+    implementation 'androidx.activity:activity-compose:1.6.1'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.1.0-alpha02'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'com.google.firebase:firebase-dynamic-links-ktx:21.1.0'
+    implementation 'androidx.compose.material:material:1.3.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+    // Navigation Compose
+    implementation("androidx.navigation:navigation-compose:2.6.0-alpha04")
+    //media3
+    implementation 'androidx.media3:media3-exoplayer:1.0.0-alpha03'
+    implementation "androidx.media3:media3-ui:1.0.0-alpha03"
+    // implementation "com.google.accompanist:accompanist-navigation-animation:<version>"
+    implementation("com.google.accompanist:accompanist-navigation-animation:0.16.1")
+    // Coil Library Dependencies
+    implementation "io.coil-kt:coil-svg:1.3.2"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+    //lottie Library
+    implementation "com.airbnb.android:lottie-compose:5.2.0"
+    //coil Library to run Gif
+    implementation("io.coil-kt:coil-compose:1.4.0")
+    implementation("io.coil-kt:coil-gif:1.4.0")
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.27.0"
+    implementation("com.github.Kaaveh:sdp-compose:1.1.0")
+    implementation 'com.github.nikachapo:ComposeCharter:1.0.3'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+}
+
+task generateChangelog() {
+    doLast {
+
+        String version = project.VERSION_NAME + " (" + Integer.parseInt(project.VERSION_CODE) + ")"
+        File versionFile = new File("changelog.txt")
+        String header = "IQOS - Changelog - " + version + " from " + System.getenv('BITBUCKET_BRANCH') + "\n"
+        versionFile.write(header + getChangelog())
+    }
+}
+
+String getChangelog() {
+    println "Generating changelog.."
+    def lastTag = "git describe --tags --abbrev=0".execute().text.trim()
+    def gitLogCmd = "git log $lastTag..HEAD --oneline --no-merges --pretty=format:\"%s\"".execute().text.trim()
+    def changelog = ""
+    gitLogCmd.eachLine { line ->
+        def escapedLine = line.substring(1, line.length() - 1)
+        escapedLine = escapedLine.replaceAll(/(\\)/, "\\/")
+        escapedLine = escapedLine.replaceAll('"', '\\\\"')
+        if (!escapedLine.contains("skip ci")) {
+            changelog += "• $escapedLine \n"
+        }
+    }
+    changelog = (changelog).trim()
+    println "Changelog generated, $changelog, from $lastTag to now."
+    return changelog
+}
